@@ -1,0 +1,6 @@
+plot(Total~Year, data=employment.rate, pch=17, type="b", ylim=c(20,80), ann=F)
+lines(Men~Year, data=employment.rate, pch=17, type="b", col="blue")
+lines(Women~Year, data=employment.rate, pch=17, type="b", col="red")
+text(x=1998, y=75, labels="1998", pos=3)
+title(main="남녀 고용률의 변화", xlab="연도", ylab="고용률(%)")
+legend("bottomright", inset=0.05, pch=17, col=c("black", "blue", "red"), legend=c("전체", "남자", "여자"))

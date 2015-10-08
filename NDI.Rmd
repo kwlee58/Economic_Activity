@@ -1,0 +1,189 @@
+---
+title: "Korea NDI Analysis"
+author: "coop711"
+date: "2015년 4월 12일"
+output: html_document
+---
+
+Data Management
+------------
+
+- 원 자료에 나와 있는 항목들은 같은 이름들이 있기 때문에 자료를 손보는 과정에서 별도의 이름을 부여.
+읽어들일 때 같은 이름이 있으면 `duplicate row.names not allowed  Error` 가 나게 됨.
+
+```{r}
+NDI<-read.table("NDI_kor.txt", header=T, row.names=1)
+NDI
+```
+
+- 변수명 앞에 X가 붙는 이유에 대해서는 `?make.names` 에서 찾아 볼 것. 
+보기가 좀 거시기하므로 변수명을 다시 지정.
+
+```{r}
+dimnames(NDI)[[2]]<-c(1990, 1995, 2000, 2005, 2011)
+NDI
+```
+
+
+- 이 작업에서 실제로 필요한 row는 `법인_3`, `일반정부_3`, `가계및비영리단체_1`, `가계및비영리단체_3` 뿐 이므로 `NDI.2`에 필요한 row만 옮김.
+
+```{r}
+NDI.2<-NDI[c(5, 12:14), ]
+NDI.2
+```
+
+- 그림 그리는 과정에 자주 등장하게 되는 연도 변수를 `year`로 저장.
+
+```{r}
+year<-as.numeric(dimnames(NDI)[[2]])
+year
+```                             
+
+- 그밖에 작업의 편의를 위하여 각각의 변수 새로 지정
+
+```{r}
+gov<-NDI.2[3,]
+personal.1<-NDI.2[1,]
+personal.3<-NDI.2[4,]
+corp<-NDI.2[2,]
+```
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+---
+
+Plots
+-----
+
+- 각 항목이 `NDI` 대비 차지하는 비중을 알아보기 위함이므로 다음과 같은 방식으로  `plot()` 이용
+
+```{r fig.width=6, fig.heigh=6}
+plot(x=c(1990, 1995, 2000, 2005, 2011), y=gov, type="b", ylim=c(0,100), xaxt="n", yaxt="n", ann=F)
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3, type="b")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3-personal.1, type="b")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3+corp, type="b")
+text(x=2000, y=10, labels="Government")
+text(x=2000, y=50, labels="Personal")
+text(x=2000, y=80, labels="Personal(Self-Employed)")
+text(x=2008, y=95, labels="Corporate")
+abline(h=c(0,100), lty=2)
+abline(v=year, lty=2)
+axis(side=1, at=year, labels=year)
+axis(side=2, at=seq(0, 100, by=20), labels=seq(0, 100, by=20))
+title(main="Trend of NDI Composition", xlab="Year", ylab="Relative Portion (%)")
+```
+
+---
+
+---
+
+---
+
+---
+
+---
+
+
+- 각 영역을 구분하기 위하여 빗금을 그으려면 `density` 와 `angle`을 설정
+
+```{r fig.width=6, fig.heigh=6}
+plot(x=c(1990, 1995, 2000, 2005, 2011), y=gov, type="l", ylim=c(0,100), xaxt="n", yaxt="n", ann=F)
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3-personal.1, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3+corp, type="l")
+polygon(x=c(year, rev(year)), y=c(rep(0, 5), rev(gov)), density=10, angle=45)
+polygon(x=c(year, rev(year)), y=c(gov, rev(gov+personal.3-personal.1)), density=10, angle=135)
+polygon(x=c(year, rev(year)), y=c(gov+personal.3-personal.1, rev(gov+personal.3)), density=10, angle=45)
+polygon(x=c(year, rev(year)), y=c(gov+personal.3, rev(gov+personal.3+corp)), density=10, angle=135)
+text(x=2000, y=10, labels="Government")
+text(x=2000, y=50, labels="Personal")
+text(x=2000, y=80, labels="Personal(Self-Employed)")
+text(x=2008, y=95, labels="Corporate")
+abline(v=year, lty=2)
+axis(side=1, at=year, labels=year)
+axis(side=2, at=seq(0, 100, by=20), labels=seq(0, 100, by=20))
+title(main="Trend of NDI Composition", xlab="Year", ylab="Relative Portion (%)")
+```
+
+---
+
+---
+
+- 색깔로 구분하려면 굳이 `type="b"` 로 할 필요는 없고, 윤곽이 자연스럽게 구현되므로 
+
+```{r fig.width=6, fig.heigh=6}
+plot(x=c(1990, 1995, 2000, 2005, 2011), y=gov, type="l", ylim=c(0,100), xaxt="n", yaxt="n", ann=F)
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3-personal.1, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3+corp, type="l")
+polygon(x=c(year, rev(year)), y=c(rep(0, 5), rev(gov)), col="grey")
+polygon(x=c(year, rev(year)), y=c(gov, rev(gov+personal.3-personal.1)), col="cyan")
+polygon(x=c(year, rev(year)), y=c(gov+personal.3-personal.1, rev(gov+personal.3)), col="yellow")
+polygon(x=c(year, rev(year)), y=c(gov+personal.3, rev(gov+personal.3+corp)), col="red")
+text(x=2000, y=10, labels="Government")
+text(x=2000, y=50, labels="Personal")
+text(x=2000, y=80, labels="Personal(Self-Employed)")
+text(x=2008, y=95, labels="Corporate")
+abline(v=year, lty=2)
+axis(side=1, at=year, labels=year)
+axis(side=2, at=seq(0, 100, by=20), labels=seq(0, 100, by=20))
+title(main="Trend of NDI Composition", xlab="Year", ylab="Relative Portion (%)")
+```
+
+---
+
+---
+
+- 컬러 인쇄가 어려운 형편이라면 `gray()`를 이용하여 설정.
+
+```{r fig.width=6, fig.height=5.5}
+plot(x=c(1990, 1995, 2000, 2005, 2011), y=gov, type="l", ylim=c(0,100), xaxt="n", yaxt="n", ann=F)
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3-personal.1, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3+corp, type="l")
+polygon(x=c(year, rev(year)), y=c(rep(0, 5), rev(gov)), col=gray(level=0.5))
+polygon(x=c(year, rev(year)), y=c(gov, rev(gov+personal.3-personal.1)), col=gray(level=0.6))
+polygon(x=c(year, rev(year)), y=c(gov+personal.3-personal.1, rev(gov+personal.3)), col=gray(level=0.7))
+polygon(x=c(year, rev(year)), y=c(gov+personal.3, rev(gov+personal.3+corp)), col=gray(level=0.8))
+text(x=2000, y=10, labels="Government")
+text(x=2000, y=50, labels="Personal")
+text(x=2000, y=80, labels="Personal(Self-Employed)")
+text(x=2008, y=95, labels="Corporate")
+abline(v=year, lty=2)
+axis(side=1, at=year, labels=year)
+axis(side=2, at=seq(0, 100, by=20), labels=seq(0, 100, by=20))
+title(main="Trend of NDI Composition", xlab="Year", ylab="Relative Portion (%)")
+```
+
+- 한글로 텍스트를 붙이려면
+
+```{r fig.width=6, fig.heigh=6}
+plot(x=c(1990, 1995, 2000, 2005, 2011), y=gov, type="l", ylim=c(0,100), xaxt="n", yaxt="n", ann=F)
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3-personal.1, type="l")
+lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3+corp, type="l")
+polygon(x=c(year, rev(year)), y=c(rep(0, 5), rev(gov)), col="grey")
+polygon(x=c(year, rev(year)), y=c(gov, rev(gov+personal.3-personal.1)), col="cyan")
+polygon(x=c(year, rev(year)), y=c(gov+personal.3-personal.1, rev(gov+personal.3)), col="yellow")
+polygon(x=c(year, rev(year)), y=c(gov+personal.3, rev(gov+personal.3+corp)), col="red")
+text(x=2000, y=10, labels="일반정부")
+text(x=2000, y=50, labels="가계 및 비영리단체(기업 및 재산소득 제외)")
+text(x=2000, y=82, labels="가계 및 비영리단체(기업 및 재산소득)")
+text(x=2008, y=97, labels="법인(금융기관포함)")
+abline(v=year, lty=2)
+axis(side=1, at=year, labels=year)
+axis(side=2, at=seq(0, 100, by=20), labels=seq(0, 100, by=20))
+title(main="국민처분가능소득(NDI) 구성비의 변화", xlab="연도", ylab="구성비(%)")
+```
+
+

@@ -1,0 +1,48 @@
+setwd("~/Dropbox/Works/Class/Case_studies_in_stat/R.WD/Economic_Activity/")#
+
+rm(list=ls())#
+
+load("econ_activity.rda")#
+
+ls()#
+
+econ.activity.2<-econ.activity#
+
+econ.activity.2$Year<-as.Date(econ.activity.2$Year, "%Y")#
+#
+
+econ.activity.2$Year#
+
+econ.activity.2$Year<-as.Date(as.character(econ.activity.2$Year), "%Y")#
+#
+#
+
+str(econ.activity.2)#
+
+econ.activity.2#
+
+format(econ.activity.2$Year, format="%Y")#
+#
+
+plot(Employed~Year, data=econ.activity.2)#
+
+tocay<-Sys.Date()#
+
+dob<-as.Date("1958-07-27")#
+
+difftime(today, dob, units="weeks")#
+
+today<-Sys.Date()#
+#
+
+difftime(today, dob, units="weeks")#
+#
+
+difftime(today, dob, units="days")#
+#
+#
+
+help(package=datasets)#
+
+??smoothScatter#
+

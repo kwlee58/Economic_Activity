@@ -1,0 +1,6 @@
+ plot(Rate~Year, data=unemployment.rate, type="b", pch=17, ylim=c(0,20), ann=F, yaxt="n")
+ abline(h=c(2,4), lty=2, col="red")
+ axis(side=2, at=c(0,2,4,10,15,20), labels=paste(c(0, 2, 4, 10, 15, 20)))
+ text(x=1963, y=9, labels="1963", pos=4)
+ text(x=1998, y=8, labels="1998", pos=3)
+  title(main="한국의 실업률 변화", xlab="연도", ylab="실업률(%)")

@@ -1,0 +1,1055 @@
+R > ls()
+ [1] "a"                 "cx"                "gdp"               "gdp_capita"        "grdp_gw"           "grdp_gw_capita"   
+ [7] "grdp_yg"           "jobs"              "jobs.bus"          "jobs.kr"           "jobs.specialty"    "jobs.village"     
+[13] "p.x"               "pop_gw"            "rate.gdp"          "rate.grdp"         "rate.grdp_yg"      "revenue"          
+[19] "revenue.bus"       "revenue.specialty" "v"                 "x"                 "year"             
+R > setwd("./Documents/통계분석사례연구/R.WD/")
+R > load("plot.rda")
+R > ls()
+ [1] "a"                 "cx"                "gdp"               "gdp_capita"        "grdp_gw"           "grdp_gw_capita"   
+ [7] "grdp_yg"           "jobs"              "jobs.bus"          "jobs.kr"           "jobs.specialty"    "jobs.village"     
+[13] "p"                 "p.x"               "pop_gw"            "rate.gdp"          "rate.grdp"         "rate.grdp_yg"     
+[19] "revenue"           "revenue.bus"       "revenue.specialty" "v"                 "x"                 "year"             
+R > qplot(date, unemploy, data=economics, geom="line",xlab="",ylab="No. unemployed (1000s)")
+에러: 함수 "qplot"를 찾을 수 없습니다
+R > library(ggplot2)
+R > qplot(date, unemploy, data=economics, geom="line",xlab="",ylab="No. unemployed (1000s)")
+R > par(family="AppleGothic")
+R > qplot(date, unemploy, data=economics, geom="line",xlab="",ylab="실업자수")
+R > qplot(date, unemploy, data=economics, geom="line",xlab="",ylab="실업자수",family="AppleGothic")
+R > plot(0,main="한글")
+R > plot(0,main="한글",xlab="한글")
+R > par()$family
+[1] "sans"
+R > g<-qplot(date, unemploy, data=economics, geom="line",xlab="",ylab="",family="AppleGothic")
+R > g+labs(title="70년대 미국의 실업률",x="연도",y="실업률")
+R > par(family="AppleGothic")
+R > g+labs(title="70년대 미국의 실업률",x="연도",y="실업률")
+R > g+labs(title="70년대 미국의 실업률",x="연도",y="실업률",family="AppleGothic")
+R > g+labs(title="70년대 미국의 실업률",x="연도",y="실업률",family="AppleMyungjo")
+R > theURL<-"http://jaredlander.com/data/Tomato%20First.csv"
+R > tomato<-read.table(file=theURL,header=TRUE,sep=",")
+R > str(tomato)
+'data.frame':	16 obs. of  11 variables:
+ $ Round        : int  1 1 1 1 2 2 2 2 3 3 ...
+ $ Tomato       : chr  "Simpson SM" "Tuttorosso (blue)" "Tuttorosso (green)" "La Fede SM DOP" ...
+ $ Price        : num  3.99 2.99 0.99 3.99 5.49 4.99 3.99 3.99 4.53 NA ...
+ $ Source       : chr  "Whole Foods" "Pioneer" "Pioneer" "Shop Rite" ...
+ $ Sweet        : num  2.8 3.3 2.8 2.6 3.3 3.2 2.6 2.1 3.4 2.6 ...
+ $ Acid         : num  2.8 2.8 2.6 2.8 3.1 2.9 2.8 2.7 3.3 2.9 ...
+ $ Color        : num  3.7 3.4 3.3 3 2.9 2.9 3.6 3.1 4.1 3.4 ...
+ $ Texture      : num  3.4 3 2.8 2.3 2.8 3.1 3.4 2.4 3.2 3.3 ...
+ $ Overall      : num  3.4 2.9 2.9 2.8 3.1 2.9 2.6 2.2 3.7 2.9 ...
+ $ Avg.of.Totals: num  16.1 15.3 14.3 13.4 14.4 15.5 14.7 12.6 17.8 15.3 ...
+ $ Total.of.Avg : num  16.1 15.3 14.3 13.4 15.2 15.1 14.9 12.5 17.7 15.2 ...
+R > tomato
+   Round                   Tomato Price           Source Sweet Acid Color Texture Overall Avg.of.Totals Total.of.Avg
+1      1               Simpson SM  3.99      Whole Foods   2.8  2.8   3.7     3.4     3.4          16.1         16.1
+2      1        Tuttorosso (blue)  2.99          Pioneer   3.3  2.8   3.4     3.0     2.9          15.3         15.3
+3      1       Tuttorosso (green)  0.99          Pioneer   2.8  2.6   3.3     2.8     2.9          14.3         14.3
+4      1           La Fede SM DOP  3.99        Shop Rite   2.6  2.8   3.0     2.3     2.8          13.4         13.4
+5      2             Cento SM DOP  5.49       D Agostino   3.3  3.1   2.9     2.8     3.1          14.4         15.2
+6      2            Cento Organic  4.99       D Agostino   3.2  2.9   2.9     3.1     2.9          15.5         15.1
+7      2              La Valle SM  3.99        Shop Rite   2.6  2.8   3.6     3.4     2.6          14.7         14.9
+8      2          La Valle SM DOP  3.99           Faicos   2.1  2.7   3.1     2.4     2.2          12.6         12.5
+9      3   Stanislaus Alta Cucina  4.53 Restaurant Depot   3.4  3.3   4.1     3.2     3.7          17.8         17.7
+10     3                     Ciao    NA            Other   2.6  2.9   3.4     3.3     2.9          15.3         15.2
+11     3       Scotts Backyard SM  0.00       Home Grown   1.6  2.9   3.1     2.4     1.9          11.9         11.9
+12     3 Di Casa Barone (organic) 12.80           Eataly   1.7  3.6   3.8     2.3     1.4          12.7         12.7
+13     4         Trader Joes Plum  1.49      Trader Joes   3.4  3.3   4.0     3.6     3.9          17.8         18.2
+14     4          365 Whole Foods  1.49      Whole Foods   2.8  2.7   3.4     3.1     3.1          14.8         15.2
+15     4        Muir Glen Organic  3.19      Whole Foods   2.9  2.8   2.7     3.2     3.1          14.8         14.7
+16     4        Bionature Organic  3.39      Whole Foods   2.4  3.3   3.4     3.2     2.8          15.1         15.2
+R > tomato2<-read.table(file=theURL,header=TRUE)
+다음에 오류가 있습니다scan(file, what, nmax, sep, dec, quote, skip, nlines, na.strings,  : 
+  라인 1는 5개의 구성요소들을 가지고 있지 않습니다
+R > ?read.table
+starting httpd help server ... done
+R > tomato2<-read.table(file=theURL,header=TRUE,sep=",")
+R > library(RODBC)
+다음에 오류가 있습니다library(RODBC) : ‘RODBC’이라고 불리는 패키지가 없습니다
+R > install.packages("RODBC")
+
+   package ‘RODBC’ is available as a source package but not as a binary
+
+경고메시지:
+package ‘RODBC’ is not available (for R version 3.1.1) 
+URL 'http://cran.nexr.com/src/contrib/RODBC_1.3-10.tar.gz'을 시도합니다
+Content type 'application/x-gzip' length 1157263 bytes (1.1 Mb)
+URL을 열었습니다
+==================================================
+downloaded 1.1 Mb
+
+* installing *source* package ‘RODBC’ ...
+** 패키지 ‘RODBC’는 성공적으로 압축해제되었고, MD5 sums 이 확인되었습니다
+checking for gcc... clang
+checking for C compiler default output file name... a.out
+checking whether the C compiler works... yes
+checking whether we are cross compiling... no
+checking for suffix of executables... checking for suffix of object files... o
+checking whether we are using the GNU C compiler... yes
+checking whether clang accepts -g... yes
+checking for clang option to accept ANSI C... none needed
+checking how to run the C preprocessor... clang -E
+checking for egrep... grep -E
+checking for ANSI C header files... rm: conftest.dSYM: is a directory
+rm: conftest.dSYM: is a directory
+yes
+checking for sys/types.h... yes
+checking for sys/stat.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for memory.h... yes
+checking for strings.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for unistd.h... yes
+checking sql.h usability... no
+checking sql.h presence... no
+checking for sql.h... no
+checking sqlext.h usability... no
+checking sqlext.h presence... no
+checking for sqlext.h... no
+configure: error: "ODBC headers sql.h and sqlext.h not found"
+ERROR: configuration failed for package ‘RODBC’
+* removing ‘/Library/Frameworks/R.framework/Versions/3.1/Resources/library/RODBC’
+
+R > lifetable<-read.table(file="../national_lifetable.csv",header=TRUE,sep=",")
+다음에 오류가 있습니다make.names(col.names, unique = TRUE) : 
+  '<b0><a2><bc><bc><ba><b0>'에서 유효하지 않은 멀티바이트 문자열이 있습니다
+R > lifetable<-read.table(file="../national_lifetable.csv",header=TRUE,sep=",")
+다음에 오류가 있습니다make.names(col.names, unique = TRUE) : 
+  '<b0><a2><bc><bc><ba><b0>'에서 유효하지 않은 멀티바이트 문자열이 있습니다
+R > lifetable<-read.table(file="../national_lifetable.csv",header=TRUE,sep=",")
+다음에 오류가 있습니다make.names(col.names, unique = TRUE) : 
+  '<b0><a2><bc><bc><ba><b0>'에서 유효하지 않은 멀티바이트 문자열이 있습니다
+R > lifetable<-read.table(file="../national_lifetable2.csv",header=TRUE,sep=",")
+R > lifetable[1:10,]
+   각세별 기대여명.전체. 기대여명.남자. 기대여명.여자. 사망확률.전체. 사망확률.남자. 사망확률.여자. 생존자.전체. 생존자.남자.
+1     0세          81.44          77.95          84.64        0.00291        0.00314        0.00267       100000       100000
+2     1세          80.68          77.19          83.86        0.00031        0.00035        0.00027        99709        99686
+3     2세          79.71          76.22          82.89        0.00022        0.00026        0.00019        99678        99651
+4     3세          78.72          75.24          81.90        0.00016        0.00019        0.00014        99656        99625
+5     4세          77.74          74.25          80.91        0.00013        0.00015        0.00012        99639        99607
+6     5세          76.75          73.27          79.92        0.00012        0.00014        0.00011        99626        99592
+7     6세          75.76          72.28          78.93        0.00012        0.00014        0.00011        99614        99579
+8     7세          74.77          71.28          77.94        0.00011        0.00013        0.00010        99602        99565
+9     8세          73.78          70.29          76.95        0.00011        0.00012        0.00010        99590        99553
+10    9세          72.78          69.30          75.95        0.00010        0.00010        0.00009        99580        99541
+   생존자.여자.  X
+1        100000 NA
+2         99733 NA
+3         99706 NA
+4         99687 NA
+5         99674 NA
+6         99662 NA
+7         99651 NA
+8         99640 NA
+9         99630 NA
+10        99621 NA
+R > lifetable[1:9,]
+  각세별 기대여명.전체. 기대여명.남자. 기대여명.여자. 사망확률.전체. 사망확률.남자. 사망확률.여자. 생존자.전체. 생존자.남자.
+1    0세          81.44          77.95          84.64        0.00291        0.00314        0.00267       100000       100000
+2    1세          80.68          77.19          83.86        0.00031        0.00035        0.00027        99709        99686
+3    2세          79.71          76.22          82.89        0.00022        0.00026        0.00019        99678        99651
+4    3세          78.72          75.24          81.90        0.00016        0.00019        0.00014        99656        99625
+5    4세          77.74          74.25          80.91        0.00013        0.00015        0.00012        99639        99607
+6    5세          76.75          73.27          79.92        0.00012        0.00014        0.00011        99626        99592
+7    6세          75.76          72.28          78.93        0.00012        0.00014        0.00011        99614        99579
+8    7세          74.77          71.28          77.94        0.00011        0.00013        0.00010        99602        99565
+9    8세          73.78          70.29          76.95        0.00011        0.00012        0.00010        99590        99553
+  생존자.여자.  X
+1       100000 NA
+2        99733 NA
+3        99706 NA
+4        99687 NA
+5        99674 NA
+6        99662 NA
+7        99651 NA
+8        99640 NA
+9        99630 NA
+R > str(lifetable)
+'data.frame':	101 obs. of  11 variables:
+ $ 각세별        : chr  "0세" "1세" "2세" "3세" ...
+ $ 기대여명.전체.: num  81.4 80.7 79.7 78.7 77.7 ...
+ $ 기대여명.남자.: num  78 77.2 76.2 75.2 74.2 ...
+ $ 기대여명.여자.: num  84.6 83.9 82.9 81.9 80.9 ...
+ $ 사망확률.전체.: num  0.00291 0.00031 0.00022 0.00016 0.00013 0.00012 0.00012 0.00011 0.00011 0.0001 ...
+ $ 사망확률.남자.: num  0.00314 0.00035 0.00026 0.00019 0.00015 0.00014 0.00014 0.00013 0.00012 0.0001 ...
+ $ 사망확률.여자.: num  0.00267 0.00027 0.00019 0.00014 0.00012 0.00011 0.00011 0.0001 0.0001 0.00009 ...
+ $ 생존자.전체.  : int  100000 99709 99678 99656 99639 99626 99614 99602 99590 99580 ...
+ $ 생존자.남자.  : int  100000 99686 99651 99625 99607 99592 99579 99565 99553 99541 ...
+ $ 생존자.여자.  : int  100000 99733 99706 99687 99674 99662 99651 99640 99630 99621 ...
+ $ X             : logi  NA NA NA NA NA NA ...
+R > lifetable<-read.table(file="../national_lifetable2.csv",header=TRUE,sep=",")
+R > str(lifetable)
+'data.frame':	101 obs. of  11 variables:
+ $ 각세별        : chr  "0세" "1세" "2세" "3세" ...
+ $ 기대여명.전체.: num  81.4 80.7 79.7 78.7 77.7 ...
+ $ 기대여명.남자.: num  78 77.2 76.2 75.2 74.2 ...
+ $ 기대여명.여자.: num  84.6 83.9 82.9 81.9 80.9 ...
+ $ 사망확률.전체.: num  0.00291 0.00031 0.00022 0.00016 0.00013 0.00012 0.00012 0.00011 0.00011 0.0001 ...
+ $ 사망확률.남자.: num  0.00314 0.00035 0.00026 0.00019 0.00015 0.00014 0.00014 0.00013 0.00012 0.0001 ...
+ $ 사망확률.여자.: num  0.00267 0.00027 0.00019 0.00014 0.00012 0.00011 0.00011 0.0001 0.0001 0.00009 ...
+ $ 생존자.전체.  : int  100000 99709 99678 99656 99639 99626 99614 99602 99590 99580 ...
+ $ 생존자.남자.  : int  100000 99686 99651 99625 99607 99592 99579 99565 99553 99541 ...
+ $ 생존자.여자.  : int  100000 99733 99706 99687 99674 99662 99651 99640 99630 99621 ...
+ $ X             : logi  NA NA NA NA NA NA ...
+R > fix(say.hello)
+R > say.hello()
+[1] "Heelo, World!"
+R > fix(say.hello)
+R > say.hello()
+[1] "Hello, World!"
+R > fix(hello.person)
+R > hello.person("기원")
+[1] "Hello 기원"
+R > fix(hello.person)
+R > hello.person("기원", "이")
+[1] "Hello 기원 이"
+R > hello.person(first="기원", last="이")
+[1] "Hello 기원 이"
+R > hello.person(last="기원", first="이")
+[1] "Hello 이 기원"
+R > ?library
+R > library(help=ggplot2)
+R > library(help=XML)
+다음에 오류가 있습니다find.package(pkgName, lib.loc, verbose = verbose) : 
+  ‘XML’이라고 불리는 패키지가 없습니다
+R > library(help=MASS)
+R > ?write
+R > Sys.time()
+[1] "2014-09-09 18:38:42 KST"
+R > data()
+R > data(package="ggplot2")
+R > ls()
+ [1] "a"                 "cx"                "g"                 "gdp"               "gdp_capita"        "grdp_gw"          
+ [7] "grdp_gw_capita"    "grdp_yg"           "hello.person"      "jobs"              "jobs.bus"          "jobs.kr"          
+[13] "jobs.specialty"    "jobs.village"      "lifetable"         "p"                 "p.x"               "pop_gw"           
+[19] "rate.gdp"          "rate.grdp"         "rate.grdp_yg"      "revenue"           "revenue.bus"       "revenue.specialty"
+[25] "say.hello"         "theURL"            "tomato"            "tomato2"           "v"                 "x"                
+[31] "year"             
+
+R > lifetable<-lifetable[,-11]
+R > str(lifetable)
+'data.frame':	101 obs. of  10 variables:
+ $ 각세별        : chr  "0세" "1세" "2세" "3세" ...
+ $ 기대여명.전체.: num  81.4 80.7 79.7 78.7 77.7 ...
+ $ 기대여명.남자.: num  78 77.2 76.2 75.2 74.2 ...
+ $ 기대여명.여자.: num  84.6 83.9 82.9 81.9 80.9 ...
+ $ 사망확률.전체.: num  0.00291 0.00031 0.00022 0.00016 0.00013 0.00012 0.00012 0.00011 0.00011 0.0001 ...
+ $ 사망확률.남자.: num  0.00314 0.00035 0.00026 0.00019 0.00015 0.00014 0.00014 0.00013 0.00012 0.0001 ...
+ $ 사망확률.여자.: num  0.00267 0.00027 0.00019 0.00014 0.00012 0.00011 0.00011 0.0001 0.0001 0.00009 ...
+ $ 생존자.전체.  : int  100000 99709 99678 99656 99639 99626 99614 99602 99590 99580 ...
+ $ 생존자.남자.  : int  100000 99686 99651 99625 99607 99592 99579 99565 99553 99541 ...
+ $ 생존자.여자.  : int  100000 99733 99706 99687 99674 99662 99651 99640 99630 99621 ...
+R > theM<-matrix(1:9,nrow=3)
+R > theM
+     [,1] [,2] [,3]
+[1,]    1    4    7
+[2,]    2    5    8
+[3,]    3    6    9
+R > theM<-matrix(1:9,nrow=3,byrows=TRUE)
+다음에 오류가 있습니다matrix(1:9, nrow = 3, byrows = TRUE) : 
+  사용되지 않은 인자 (byrows = TRUE)
+R > theM<-matrix(1:9,nrow=3,byrow=TRUE)
+R > theM
+     [,1] [,2] [,3]
+[1,]    1    2    3
+[2,]    4    5    6
+[3,]    7    8    9
+R > ?matrix
+R > theM<-matrix(1:9,nrow=3)
+R > apply(theM, 1,sum)
+[1] 12 15 18
+R > ?sapply
+R > ?mapply
+R > library(help=plyr)
+R > search()
+ [1] ".GlobalEnv"        "package:ggplot2"   "tools:RGUI"        "package:stats"     "package:graphics"  "package:grDevices"
+ [7] "package:utils"     "package:datasets"  "KoreaEnv"          "package:methods"   "Autoloads"         "package:base"     
+R > install.packages(plyr)
+다음에 오류가 있습니다install.packages(plyr) : 객체 'plyr'를 찾을 수 없습니다
+R > install.packages("plyr")
+URL 'http://cran.nexr.com/bin/macosx/mavericks/contrib/3.1/plyr_1.8.1.tgz'을 시도합니다
+Content type 'application/x-gzip' length 863410 bytes (843 Kb)
+URL을 열었습니다
+==================================================
+downloaded 843 Kb
+
+
+다운로드된 바이너리 패키지들은 다음의 위치에 있습니다
+	/var/folders/_h/tg1th9bd4h98rjjb5vy9gn3m0000gn/T//RtmpyN9XPt/downloaded_packages
+R > library(plyr)
+R > ?data
+R > data(diamonds)
+R > ?aggregate
+R > aggregate(price, by=cut, mean)
+다음에 오류가 있습니다aggregate(price, by = cut, mean) : 
+  객체 'price'를 찾을 수 없습니다
+R > aggregate(diamonds$price, diamonds$cut, mean)
+다음에 오류가 있습니다aggregate.data.frame(as.data.frame(x), ...) : 
+  'by'는 반드시 리스트이어야 합니다
+R > aggregate(diamonds$price, by=list(diamonds$cut), mean)
+    Group.1        x
+1      Fair 4358.758
+2      Good 3928.864
+3 Very Good 3981.760
+4   Premium 4584.258
+5     Ideal 3457.542
+R > aggregate(price~cut,data=diamonds, mean)
+        cut    price
+1      Fair 4358.758
+2      Good 3928.864
+3 Very Good 3981.760
+4   Premium 4584.258
+5     Ideal 3457.542
+R > aggregate(diamonds$price, by=list(diamonds$cut,diamonds$color), mean)
+     Group.1 Group.2        x
+1       Fair       D 4291.061
+2       Good       D 3405.382
+3  Very Good       D 3470.467
+4    Premium       D 3631.293
+5      Ideal       D 2629.095
+6       Fair       E 3682.312
+7       Good       E 3423.644
+8  Very Good       E 3214.652
+9    Premium       E 3538.914
+10     Ideal       E 2597.550
+11      Fair       F 3827.003
+12      Good       F 3495.750
+13 Very Good       F 3778.820
+14   Premium       F 4324.890
+15     Ideal       F 3374.939
+16      Fair       G 4239.255
+17      Good       G 4123.482
+18 Very Good       G 3872.754
+19   Premium       G 4500.742
+20     Ideal       G 3720.706
+21      Fair       H 5135.683
+22      Good       H 4276.255
+23 Very Good       H 4535.390
+24   Premium       H 5216.707
+25     Ideal       H 3889.335
+26      Fair       I 4685.446
+27      Good       I 5078.533
+28 Very Good       I 5255.880
+29   Premium       I 5946.181
+30     Ideal       I 4451.970
+31      Fair       J 4975.655
+32      Good       J 4574.173
+33 Very Good       J 5103.513
+34   Premium       J 6294.592
+35     Ideal       J 4918.186
+R > aggregate(price~cut+color,data=diamonds, mean)
+         cut color    price
+1       Fair     D 4291.061
+2       Good     D 3405.382
+3  Very Good     D 3470.467
+4    Premium     D 3631.293
+5      Ideal     D 2629.095
+6       Fair     E 3682.312
+7       Good     E 3423.644
+8  Very Good     E 3214.652
+9    Premium     E 3538.914
+10     Ideal     E 2597.550
+11      Fair     F 3827.003
+12      Good     F 3495.750
+13 Very Good     F 3778.820
+14   Premium     F 4324.890
+15     Ideal     F 3374.939
+16      Fair     G 4239.255
+17      Good     G 4123.482
+18 Very Good     G 3872.754
+19   Premium     G 4500.742
+20     Ideal     G 3720.706
+21      Fair     H 5135.683
+22      Good     H 4276.255
+23 Very Good     H 4535.390
+24   Premium     H 5216.707
+25     Ideal     H 3889.335
+26      Fair     I 4685.446
+27      Good     I 5078.533
+28 Very Good     I 5255.880
+29   Premium     I 5946.181
+30     Ideal     I 4451.970
+31      Fair     J 4975.655
+32      Good     J 4574.173
+33 Very Good     J 5103.513
+34   Premium     J 6294.592
+35     Ideal     J 4918.186
+R > ?by
+R > by(diamonds$price, list(diamonds$cut,diamonds$color),mean)
+: Fair
+: D
+[1] 4291.061
+------------------------------------------------------------------------------------------------ 
+: Good
+: D
+[1] 3405.382
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: D
+[1] 3470.467
+------------------------------------------------------------------------------------------------ 
+: Premium
+: D
+[1] 3631.293
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: D
+[1] 2629.095
+------------------------------------------------------------------------------------------------ 
+: Fair
+: E
+[1] 3682.312
+------------------------------------------------------------------------------------------------ 
+: Good
+: E
+[1] 3423.644
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: E
+[1] 3214.652
+------------------------------------------------------------------------------------------------ 
+: Premium
+: E
+[1] 3538.914
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: E
+[1] 2597.55
+------------------------------------------------------------------------------------------------ 
+: Fair
+: F
+[1] 3827.003
+------------------------------------------------------------------------------------------------ 
+: Good
+: F
+[1] 3495.75
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: F
+[1] 3778.82
+------------------------------------------------------------------------------------------------ 
+: Premium
+: F
+[1] 4324.89
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: F
+[1] 3374.939
+------------------------------------------------------------------------------------------------ 
+: Fair
+: G
+[1] 4239.255
+------------------------------------------------------------------------------------------------ 
+: Good
+: G
+[1] 4123.482
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: G
+[1] 3872.754
+------------------------------------------------------------------------------------------------ 
+: Premium
+: G
+[1] 4500.742
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: G
+[1] 3720.706
+------------------------------------------------------------------------------------------------ 
+: Fair
+: H
+[1] 5135.683
+------------------------------------------------------------------------------------------------ 
+: Good
+: H
+[1] 4276.255
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: H
+[1] 4535.39
+------------------------------------------------------------------------------------------------ 
+: Premium
+: H
+[1] 5216.707
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: H
+[1] 3889.335
+------------------------------------------------------------------------------------------------ 
+: Fair
+: I
+[1] 4685.446
+------------------------------------------------------------------------------------------------ 
+: Good
+: I
+[1] 5078.533
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: I
+[1] 5255.88
+------------------------------------------------------------------------------------------------ 
+: Premium
+: I
+[1] 5946.181
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: I
+[1] 4451.97
+------------------------------------------------------------------------------------------------ 
+: Fair
+: J
+[1] 4975.655
+------------------------------------------------------------------------------------------------ 
+: Good
+: J
+[1] 4574.173
+------------------------------------------------------------------------------------------------ 
+: Very Good
+: J
+[1] 5103.513
+------------------------------------------------------------------------------------------------ 
+: Premium
+: J
+[1] 6294.592
+------------------------------------------------------------------------------------------------ 
+: Ideal
+: J
+[1] 4918.186
+
+R > aggregate(price~cut+color,data=diamonds, mean)
+         cut color    price
+1       Fair     D 4291.061
+2       Good     D 3405.382
+3  Very Good     D 3470.467
+4    Premium     D 3631.293
+5      Ideal     D 2629.095
+6       Fair     E 3682.312
+7       Good     E 3423.644
+8  Very Good     E 3214.652
+9    Premium     E 3538.914
+10     Ideal     E 2597.550
+11      Fair     F 3827.003
+12      Good     F 3495.750
+13 Very Good     F 3778.820
+14   Premium     F 4324.890
+15     Ideal     F 3374.939
+16      Fair     G 4239.255
+17      Good     G 4123.482
+18 Very Good     G 3872.754
+19   Premium     G 4500.742
+20     Ideal     G 3720.706
+21      Fair     H 5135.683
+22      Good     H 4276.255
+23 Very Good     H 4535.390
+24   Premium     H 5216.707
+25     Ideal     H 3889.335
+26      Fair     I 4685.446
+27      Good     I 5078.533
+28 Very Good     I 5255.880
+29   Premium     I 5946.181
+30     Ideal     I 4451.970
+31      Fair     J 4975.655
+32      Good     J 4574.173
+33 Very Good     J 5103.513
+34   Premium     J 6294.592
+35     Ideal     J 4918.186
+R > ?table
+R > class(aggregate(price~cut+color,data=diamonds, mean))
+[1] "data.frame"
+R > str(aggregate(price~cut+color,data=diamonds, mean))
+'data.frame':	35 obs. of  3 variables:
+ $ cut  : Ord.factor w/ 5 levels "Fair"<"Good"<..: 1 2 3 4 5 1 2 3 4 5 ...
+ $ color: Ord.factor w/ 7 levels "D"<"E"<"F"<"G"<..: 1 1 1 1 1 2 2 2 2 2 ...
+ $ price: num  4291 3405 3470 3631 2629 ...
+R > ?as.table
+R > price.by.cut.color<-aggregate(price~cut+color,data=diamonds, mean)
+R > xtabs(price~cut+color,data=price.by.cut.color)
+           color
+cut                D        E        F        G        H        I        J
+  Fair      4291.061 3682.312 3827.003 4239.255 5135.683 4685.446 4975.655
+  Good      3405.382 3423.644 3495.750 4123.482 4276.255 5078.533 4574.173
+  Very Good 3470.467 3214.652 3778.820 3872.754 4535.390 5255.880 5103.513
+  Premium   3631.293 3538.914 4324.890 4500.742 5216.707 5946.181 6294.592
+  Ideal     2629.095 2597.550 3374.939 3720.706 3889.335 4451.970 4918.186
+R > price.carat.by.cut.color<-aggregate(cbind(price,carat)~cut+color,data=diamonds, mean)
+R > price.carat.by.cut.color
+         cut color    price     carat
+1       Fair     D 4291.061 0.9201227
+2       Good     D 3405.382 0.7445166
+3  Very Good     D 3470.467 0.6964243
+4    Premium     D 3631.293 0.7215471
+5      Ideal     D 2629.095 0.5657657
+6       Fair     E 3682.312 0.8566071
+7       Good     E 3423.644 0.7451340
+8  Very Good     E 3214.652 0.6763167
+9    Premium     E 3538.914 0.7177450
+10     Ideal     E 2597.550 0.5784012
+11      Fair     F 3827.003 0.9047115
+12      Good     F 3495.750 0.7759296
+13 Very Good     F 3778.820 0.7409612
+14   Premium     F 4324.890 0.8270356
+15     Ideal     F 3374.939 0.6558285
+16      Fair     G 4239.255 1.0238217
+17      Good     G 4123.482 0.8508955
+18 Very Good     G 3872.754 0.7667986
+19   Premium     G 4500.742 0.8414877
+20     Ideal     G 3720.706 0.7007146
+21      Fair     H 5135.683 1.2191749
+22      Good     H 4276.255 0.9147293
+23 Very Good     H 4535.390 0.9159485
+24   Premium     H 5216.707 1.0164492
+25     Ideal     H 3889.335 0.7995249
+26      Fair     I 4685.446 1.1980571
+27      Good     I 5078.533 1.0572222
+28 Very Good     I 5255.880 1.0469518
+29   Premium     I 5946.181 1.1449370
+30     Ideal     I 4451.970 0.9130291
+31      Fair     J 4975.655 1.3411765
+32      Good     J 4574.173 1.0995440
+33 Very Good     J 5103.513 1.1332153
+34   Premium     J 6294.592 1.2930941
+35     Ideal     J 4918.186 1.0635937
+R > xtabs(price~cut+color,data=price.carat.by.cut.color)
+           color
+cut                D        E        F        G        H        I        J
+  Fair      4291.061 3682.312 3827.003 4239.255 5135.683 4685.446 4975.655
+  Good      3405.382 3423.644 3495.750 4123.482 4276.255 5078.533 4574.173
+  Very Good 3470.467 3214.652 3778.820 3872.754 4535.390 5255.880 5103.513
+  Premium   3631.293 3538.914 4324.890 4500.742 5216.707 5946.181 6294.592
+  Ideal     2629.095 2597.550 3374.939 3720.706 3889.335 4451.970 4918.186
+R > xtabs(carat~cut+color,data=price.carat.by.cut.color)
+           color
+cut                 D         E         F         G         H         I         J
+  Fair      0.9201227 0.8566071 0.9047115 1.0238217 1.2191749 1.1980571 1.3411765
+  Good      0.7445166 0.7451340 0.7759296 0.8508955 0.9147293 1.0572222 1.0995440
+  Very Good 0.6964243 0.6763167 0.7409612 0.7667986 0.9159485 1.0469518 1.1332153
+  Premium   0.7215471 0.7177450 0.8270356 0.8414877 1.0164492 1.1449370 1.2930941
+  Ideal     0.5657657 0.5784012 0.6558285 0.7007146 0.7995249 0.9130291 1.0635937
+R > xtabs(cbind(price,carat)~cut+color,data=price.carat.by.cut.color)
+, ,  = price
+
+           color
+cut                    D            E            F            G            H            I            J
+  Fair      4291.0613497 3682.3125000 3827.0032051 4239.2547771 5135.6831683 4685.4457143 4975.6554622
+  Good      3405.3821752 3423.6441586 3495.7502750 4123.4822044 4276.2549858 5078.5325670 4574.1726384
+  Very Good 3470.4672835 3214.6520833 3778.8202403 3872.7538060 4535.3903509 5255.8795681 5103.5132743
+  Premium   3631.2925764 3538.9144202 4324.8901759 4500.7421341 5216.7067797 5946.1806723 6294.5915842
+  Ideal     2629.0945660 2597.5500897 3374.9393623 3720.7063882 3889.3348315 4451.9703774 4918.1863839
+
+, ,  = carat
+
+           color
+cut                    D            E            F            G            H            I            J
+  Fair         0.9201227    0.8566071    0.9047115    1.0238217    1.2191749    1.1980571    1.3411765
+  Good         0.7445166    0.7451340    0.7759296    0.8508955    0.9147293    1.0572222    1.0995440
+  Very Good    0.6964243    0.6763167    0.7409612    0.7667986    0.9159485    1.0469518    1.1332153
+  Premium      0.7215471    0.7177450    0.8270356    0.8414877    1.0164492    1.1449370    1.2930941
+  Ideal        0.5657657    0.5784012    0.6558285    0.7007146    0.7995249    0.9130291    1.0635937
+
+R > round(xtabs(cbind(price,carat)~cut+color,data=price.carat.by.cut.color),digits=2)
+, ,  = price
+
+           color
+cut               D       E       F       G       H       I       J
+  Fair      4291.06 3682.31 3827.00 4239.25 5135.68 4685.45 4975.66
+  Good      3405.38 3423.64 3495.75 4123.48 4276.25 5078.53 4574.17
+  Very Good 3470.47 3214.65 3778.82 3872.75 4535.39 5255.88 5103.51
+  Premium   3631.29 3538.91 4324.89 4500.74 5216.71 5946.18 6294.59
+  Ideal     2629.09 2597.55 3374.94 3720.71 3889.33 4451.97 4918.19
+
+, ,  = carat
+
+           color
+cut               D       E       F       G       H       I       J
+  Fair         0.92    0.86    0.90    1.02    1.22    1.20    1.34
+  Good         0.74    0.75    0.78    0.85    0.91    1.06    1.10
+  Very Good    0.70    0.68    0.74    0.77    0.92    1.05    1.13
+  Premium      0.72    0.72    0.83    0.84    1.02    1.14    1.29
+  Ideal        0.57    0.58    0.66    0.70    0.80    0.91    1.06
+
+R > search()
+ [1] ".GlobalEnv"        "package:plyr"      "package:ggplot2"   "tools:RGUI"        "package:stats"     "package:graphics" 
+ [7] "package:grDevices" "package:utils"     "package:datasets"  "KoreaEnv"          "package:methods"   "Autoloads"        
+[13] "package:base"     
+R > head(baseball)
+           id year stint team lg  g  ab  r  h X2b X3b hr rbi sb cs bb so ibb hbp sh sf gidp
+4   ansonca01 1871     1  RC1    25 120 29 39  11   3  0  16  6  2  2  1  NA  NA NA NA   NA
+44  forceda01 1871     1  WS3    32 162 45 45   9   4  0  29  8  0  4  0  NA  NA NA NA   NA
+68  mathebo01 1871     1  FW1    19  89 15 24   3   1  0  10  2  1  2  0  NA  NA NA NA   NA
+99  startjo01 1871     1  NY2    33 161 35 58   5   1  1  34  4  2  3  0  NA  NA NA NA   NA
+102 suttoez01 1871     1  CL1    29 128 35 45   3   7  3  23  3  1  1  0  NA  NA NA NA   NA
+106 whitede01 1871     1  CL1    29 146 40 47   6   5  1  21  2  2  4  1  NA  NA NA NA   NA
+R > str(baseball)
+'data.frame':	21699 obs. of  22 variables:
+ $ id   : chr  "ansonca01" "forceda01" "mathebo01" "startjo01" ...
+ $ year : int  1871 1871 1871 1871 1871 1871 1871 1872 1872 1872 ...
+ $ stint: int  1 1 1 1 1 1 1 1 1 1 ...
+ $ team : chr  "RC1" "WS3" "FW1" "NY2" ...
+ $ lg   : chr  "" "" "" "" ...
+ $ g    : int  25 32 19 33 29 29 29 46 37 25 ...
+ $ ab   : int  120 162 89 161 128 146 145 217 174 130 ...
+ $ r    : int  29 45 15 35 35 40 36 60 26 40 ...
+ $ h    : int  39 45 24 58 45 47 37 90 46 53 ...
+ $ X2b  : int  11 9 3 5 3 6 5 10 3 11 ...
+ $ X3b  : int  3 4 1 1 7 5 7 7 0 0 ...
+ $ hr   : int  0 0 0 1 3 1 2 0 0 0 ...
+ $ rbi  : int  16 29 10 34 23 21 23 50 15 16 ...
+ $ sb   : int  6 8 2 4 3 2 2 6 0 2 ...
+ $ cs   : int  2 0 1 2 1 2 2 6 1 2 ...
+ $ bb   : int  2 4 2 3 1 4 9 16 1 1 ...
+ $ so   : int  1 0 0 0 0 1 1 3 1 0 ...
+ $ ibb  : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ hbp  : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ sh   : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ sf   : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ gidp : int  NA NA NA NA NA NA NA NA NA NA ...
+R > baseball$sf[baseball$year<1954]<-0
+R > any(is.na(baseball$sf))
+[1] FALSE
+R > baseball$hbp[is.na(baseball$hbp)]<-0
+R > any(is.na(baseball$hbp))
+[1] FALSE
+R > baseball.2<-baseball[baseball$ab>=50,]
+R > str(baseball.2)
+'data.frame':	14828 obs. of  22 variables:
+ $ id   : chr  "ansonca01" "forceda01" "mathebo01" "startjo01" ...
+ $ year : int  1871 1871 1871 1871 1871 1871 1871 1872 1872 1872 ...
+ $ stint: int  1 1 1 1 1 1 1 1 1 1 ...
+ $ team : chr  "RC1" "WS3" "FW1" "NY2" ...
+ $ lg   : chr  "" "" "" "" ...
+ $ g    : int  25 32 19 33 29 29 29 46 37 25 ...
+ $ ab   : int  120 162 89 161 128 146 145 217 174 130 ...
+ $ r    : int  29 45 15 35 35 40 36 60 26 40 ...
+ $ h    : int  39 45 24 58 45 47 37 90 46 53 ...
+ $ X2b  : int  11 9 3 5 3 6 5 10 3 11 ...
+ $ X3b  : int  3 4 1 1 7 5 7 7 0 0 ...
+ $ hr   : int  0 0 0 1 3 1 2 0 0 0 ...
+ $ rbi  : int  16 29 10 34 23 21 23 50 15 16 ...
+ $ sb   : int  6 8 2 4 3 2 2 6 0 2 ...
+ $ cs   : int  2 0 1 2 1 2 2 6 1 2 ...
+ $ bb   : int  2 4 2 3 1 4 9 16 1 1 ...
+ $ so   : int  1 0 0 0 0 1 1 3 1 0 ...
+ $ ibb  : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ hbp  : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ sh   : int  NA NA NA NA NA NA NA NA NA NA ...
+ $ sf   : num  0 0 0 0 0 0 0 0 0 0 ...
+ $ gidp : int  NA NA NA NA NA NA NA NA NA NA ...
+R > baseball.2$OBP<-with(baseball.2,(h+bp+hbp)/(ab+bb+hbp+sf))
+다음에 오류가 있습니다eval(expr, envir, enclos) : 객체 'bp'를 찾을 수 없습니다
+R > baseball.2$OBP<-with(baseball.2,(h+bb+hbp)/(ab+bb+hbp+sf))
+R > tail(baseball.2)
+             id year stint team lg   g  ab  r   h X2b X3b hr rbi sb cs  bb  so ibb hbp sh sf gidp       OBP
+89499 claytro01 2007     1  TOR AL  69 189 23  48  14   0  1  12  2  1  14  50   0   1  3  3    8 0.3043478
+89502 cirilje01 2007     1  MIN AL  50 153 18  40   9   2  2  21  2  0  15  13   0   1  3  2    9 0.3274854
+89521 bondsba01 2007     1  SFN NL 126 340 75  94  14   0 28  66  5  0 132  54  43   3  0  2   13 0.4800839
+89523 biggicr01 2007     1  HOU NL 141 517 68 130  31   3 10  50  4  3  23 112   0   3  7  5    5 0.2846715
+89530 ausmubr01 2007     1  HOU NL 117 349 38  82  16   3  3  25  6  1  37  74   3   6  4  1   11 0.3180662
+89533  aloumo01 2007     1  NYN NL  87 328 51 112  19   1 13  49  3  0  27  30   5   2  0  3   13 0.3916667
+
+R > baseball.2[baseball.2[,"id"]=="ruthba01",]
+            id year stint team lg   g  ab   r   h X2b X3b hr rbi sb cs  bb so ibb hbp sh sf gidp       OBP
+15457 ruthba01 1915     1  BOS AL  42  92  16  29  10   1  4  21  0 NA   9 23  NA   0  2  0   NA 0.3762376
+16238 ruthba01 1916     1  BOS AL  67 136  18  37   5   3  3  15  0 NA  10 23  NA   0  4  0   NA 0.3219178
+16776 ruthba01 1917     1  BOS AL  52 123  14  40   6   3  2  12  0 NA  12 18  NA   0  7  0   NA 0.3851852
+17286 ruthba01 1918     1  BOS AL  95 317  50  95  26  11 11  66  6 NA  58 58  NA   2  3  0   NA 0.4111406
+17790 ruthba01 1919     1  BOS AL 130 432 103 139  34  12 29 114  7 NA 101 58  NA   6  3  0   NA 0.4564007
+18329 ruthba01 1920     1  NYA AL 142 457 158 172  36   9 54 137 14 14 150 80  NA   3  5  0   NA 0.5327869
+18834 ruthba01 1921     1  NYA AL 152 540 177 204  44  16 59 171 17 13 145 81  NA   4  4  0   NA 0.5123367
+19363 ruthba01 1922     1  NYA AL 110 406  94 128  24   8 35  99  2  5  84 80  NA   1  4  0   NA 0.4338086
+19883 ruthba01 1923     1  NYA AL 152 522 151 205  45  13 41 131 17 21 170 93  NA   4  3  0   NA 0.5445402
+20420 ruthba01 1924     1  NYA AL 153 529 143 200  39   7 46 121  9 13 142 81  NA   4  6  0   NA 0.5125926
+20967 ruthba01 1925     1  NYA AL  98 359  61 104  12   2 25  66  2  4  59 68  NA   2  6  0   NA 0.3928571
+21507 ruthba01 1926     1  NYA AL 152 495 139 184  30   5 47 150 11  9 144 76  NA   3 10  0   NA 0.5155763
+22038 ruthba01 1927     1  NYA AL 151 540 158 192  29   8 60 164  7  6 137 89  NA   0 14  0   NA 0.4859675
+22572 ruthba01 1928     1  NYA AL 154 536 163 173  29   8 54 142  4  5 137 87  NA   3  8  0   NA 0.4630178
+23110 ruthba01 1929     1  NYA AL 135 499 121 172  26   6 46 154  5  3  72 60  NA   3 13  0   NA 0.4303136
+23656 ruthba01 1930     1  NYA AL 145 518 150 186  28   9 49 153 10 10 136 61  NA   1 21  0   NA 0.4931298
+24167 ruthba01 1931     1  NYA AL 145 534 149 199  31   3 46 163  5  4 128 51  NA   1  0  0   NA 0.4947210
+24694 ruthba01 1932     1  NYA AL 133 457 120 156  13   5 41 137  2  2 130 62  NA   2  0  0   NA 0.4889643
+25199 ruthba01 1933     1  NYA AL 137 459  97 138  21   3 34 103  4  5 114 90  NA   2  0  0   NA 0.4417391
+25702 ruthba01 1934     1  NYA AL 125 365  78 105  17   4 22  84  1  3 104 63  NA   2  0  0   NA 0.4479830
+26477 ruthba01 1935     1  BSN NL  28  72  13  13   0   0  6  12  0 NA  20 24  NA   0  0  0    2 0.3586957
+R > baseball.2[baseball.2$id=="ruthba01",]
+            id year stint team lg   g  ab   r   h X2b X3b hr rbi sb cs  bb so ibb hbp sh sf gidp       OBP
+15457 ruthba01 1915     1  BOS AL  42  92  16  29  10   1  4  21  0 NA   9 23  NA   0  2  0   NA 0.3762376
+16238 ruthba01 1916     1  BOS AL  67 136  18  37   5   3  3  15  0 NA  10 23  NA   0  4  0   NA 0.3219178
+16776 ruthba01 1917     1  BOS AL  52 123  14  40   6   3  2  12  0 NA  12 18  NA   0  7  0   NA 0.3851852
+17286 ruthba01 1918     1  BOS AL  95 317  50  95  26  11 11  66  6 NA  58 58  NA   2  3  0   NA 0.4111406
+17790 ruthba01 1919     1  BOS AL 130 432 103 139  34  12 29 114  7 NA 101 58  NA   6  3  0   NA 0.4564007
+18329 ruthba01 1920     1  NYA AL 142 457 158 172  36   9 54 137 14 14 150 80  NA   3  5  0   NA 0.5327869
+18834 ruthba01 1921     1  NYA AL 152 540 177 204  44  16 59 171 17 13 145 81  NA   4  4  0   NA 0.5123367
+19363 ruthba01 1922     1  NYA AL 110 406  94 128  24   8 35  99  2  5  84 80  NA   1  4  0   NA 0.4338086
+19883 ruthba01 1923     1  NYA AL 152 522 151 205  45  13 41 131 17 21 170 93  NA   4  3  0   NA 0.5445402
+20420 ruthba01 1924     1  NYA AL 153 529 143 200  39   7 46 121  9 13 142 81  NA   4  6  0   NA 0.5125926
+20967 ruthba01 1925     1  NYA AL  98 359  61 104  12   2 25  66  2  4  59 68  NA   2  6  0   NA 0.3928571
+21507 ruthba01 1926     1  NYA AL 152 495 139 184  30   5 47 150 11  9 144 76  NA   3 10  0   NA 0.5155763
+22038 ruthba01 1927     1  NYA AL 151 540 158 192  29   8 60 164  7  6 137 89  NA   0 14  0   NA 0.4859675
+22572 ruthba01 1928     1  NYA AL 154 536 163 173  29   8 54 142  4  5 137 87  NA   3  8  0   NA 0.4630178
+23110 ruthba01 1929     1  NYA AL 135 499 121 172  26   6 46 154  5  3  72 60  NA   3 13  0   NA 0.4303136
+23656 ruthba01 1930     1  NYA AL 145 518 150 186  28   9 49 153 10 10 136 61  NA   1 21  0   NA 0.4931298
+24167 ruthba01 1931     1  NYA AL 145 534 149 199  31   3 46 163  5  4 128 51  NA   1  0  0   NA 0.4947210
+24694 ruthba01 1932     1  NYA AL 133 457 120 156  13   5 41 137  2  2 130 62  NA   2  0  0   NA 0.4889643
+25199 ruthba01 1933     1  NYA AL 137 459  97 138  21   3 34 103  4  5 114 90  NA   2  0  0   NA 0.4417391
+25702 ruthba01 1934     1  NYA AL 125 365  78 105  17   4 22  84  1  3 104 63  NA   2  0  0   NA 0.4479830
+26477 ruthba01 1935     1  BSN NL  28  72  13  13   0   0  6  12  0 NA  20 24  NA   0  0  0    2 0.3586957
+R > ?ddply
+R > fix(obp)
+R > obp(baseball.2[baseball.2$id=="ruthba01",])
+      OBP 
+0.4742209 
+R > careerOBP<-ddply(baseball.2,.variables="id",.fun=obp)
+R > str(careerOBP)
+'data.frame':	1118 obs. of  2 variables:
+ $ id : chr  "aaronha01" "adairje01" "adamsba01" "adamsbo03" ...
+ $ OBP: num  0.374 0.292 0.255 0.34 0.337 ...
+R > head(careerOBP)
+         id       OBP
+1 aaronha01 0.3739493
+2 adairje01 0.2922746
+3 adamsba01 0.2550694
+4 adamsbo03 0.3403342
+5 adcocjo01 0.3368726
+6 aguilri01 0.2037037
+R > careerOBP.order<-careerOBP[order(careerOBP$OBP,decreasing=TRUE),]
+R > head(careerOBP.order,n=10)
+            id       OBP
+1089 willite01 0.4816861
+875   ruthba01 0.4742209
+658  mcgrajo01 0.4657478
+356  gehrilo01 0.4477848
+85   bondsba01 0.4444622
+476  hornsro01 0.4339068
+184   cobbty01 0.4329655
+327   foxxji01 0.4290509
+953  speaktr01 0.4283386
+191  collied01 0.4251246
+R > baseball.2[baseball.2$id=="williete01",]
+ [1] id    year  stint team  lg    g     ab    r     h     X2b   X3b   hr    rbi   sb    cs    bb    so    ibb   hbp   sh   
+[21] sf    gidp  OBP  
+<0 행> <또는 row.names의 길이가 0입니다>
+R > baseball.2[baseball.2$id=="willite01",]
+             id year stint team lg   g  ab   r   h X2b X3b hr rbi sb cs  bb so ibb hbp sh sf gidp       OBP
+28376 willite01 1939     1  BOS AL 149 565 131 185  44  11 31 145  2  1 107 64  NA   2  3  0   10 0.4362018
+28925 willite01 1940     1  BOS AL 144 561 134 193  43  14 23 113  4  4  96 54  NA   3  1  0   13 0.4424242
+29489 willite01 1941     1  BOS AL 143 456 135 185  33   3 37 120  2  4 147 27  NA   3  0  0   10 0.5528053
+30057 willite01 1942     1  BOS AL 150 522 141 186  34   5 36 137  3  2 145 51  NA   4  0  0   12 0.4992548
+32360 willite01 1946     1  BOS AL 150 514 142 176  37   8 38 123  0  0 156 44  NA   2  0  0   12 0.4970238
+32990 willite01 1947     1  BOS AL 156 528 125 181  40   9 32 114  0  1 162 47  NA   2  1  0   10 0.4985549
+33571 willite01 1948     1  BOS AL 137 509 124 188  44   3 25 127  4  0 126 41  NA   3  0  0   10 0.4968652
+34146 willite01 1949     1  BOS AL 155 566 150 194  39   3 43 159  1  1 162 48  NA   2  0  0   22 0.4904110
+34735 willite01 1950     1  BOS AL  89 334  82 106  24   1 28  97  3  0  82 21  NA   0  0  0   12 0.4519231
+35330 willite01 1951     1  BOS AL 148 531 109 169  28   4 30 126  1  1 144 45  NA   0  0  0   10 0.4637037
+36570 willite01 1953     1  BOS AL  37  91  17  37   6   0 13  34  0  1  19 10  NA   0  0  0    1 0.5090909
+37145 willite01 1954     1  BOS AL 117 386  93 133  23   1 29  89  0  0 136 32  NA   1  0  3   10 0.5133080
+37780 willite01 1955     1  BOS AL  98 320  77 114  21   3 28  83  2  0  91 24  17   2  0  4    8 0.4964029
+38393 willite01 1956     1  BOS AL 136 400  71 138  28   2 24  82  0  0 102 39  11   1  0  0   13 0.4791252
+39011 willite01 1957     1  BOS AL 132 420  96 163  28   1 38  87  0  1 119 43  33   5  0  2   11 0.5256410
+39633 willite01 1958     1  BOS AL 129 411  81 135  23   2 26  85  1  0  98 49  12   4  0  4   19 0.4584139
+40279 willite01 1959     1  BOS AL 103 272  32  69  15   0 10  43  0  0  52 27   6   2  0  5    7 0.3716012
+40909 willite01 1960     1  BOS AL 113 310  56  98  15   0 29  72  1  1  75 41   7   3  0  2    7 0.4512821
+R > baseball.2[baseball.2$id=="mcgrajo01",]
+            id year stint team lg   g  ab   r   h X2b X3b hr rbi sb cs  bb so ibb hbp sh sf gidp       OBP
+5195 mcgrajo01 1891     1  BL3 AA  33 115  17  31   3   5  0  14  4 NA  12 17  NA   4 NA  0   NA 0.3587786
+5645 mcgrajo01 1892     1  BLN NL  79 286  41  77  13   2  1  26 15 NA  32 21  NA   6 NA  0   NA 0.3549383
+5939 mcgrajo01 1893     1  BLN NL 127 480 123 154   9  10  5  64 38 NA 101 11  NA  16 NA  0   NA 0.4539363
+6228 mcgrajo01 1894     1  BLN NL 124 512 156 174  18  14  1  92 78 NA  91 12  NA  13 NA  0   NA 0.4512987
+6538 mcgrajo01 1895     1  BLN NL  96 388 110 143  13   6  2  48 61 NA  60  9  NA   5  6  0   NA 0.4591611
+6847 mcgrajo01 1896     1  BLN NL  23  77  20  25   2   2  0  14 13 NA  11  4  NA   2  0  0   NA 0.4222222
+7131 mcgrajo01 1897     1  BLN NL 106 391  90 127  15   3  0  48 44 NA  99 NA  NA   9  8  0   NA 0.4709419
+7431 mcgrajo01 1898     1  BLN NL 143 515 143 176   8  10  0  53 43 NA 112 NA  NA  19  6  0   NA 0.4752322
+7772 mcgrajo01 1899     1  BLN NL 117 399 140 156  13   3  1  33 73 NA 124 NA  NA  14  2  0   NA 0.5474860
+8022 mcgrajo01 1900     1  SLN NL  99 334  84 115  10   4  2  33 29 NA  85 NA  NA  23  5  0   NA 0.5045249
+8228 mcgrajo01 1901     1  BLA AL  73 232  71  81  14   9  0  28 24 NA  61 NA  NA  14  1  0   NA 0.5081433
+8636 mcgrajo01 1902     1  BLA AL  20  63  14  18   3   2  1   3  5 NA  17 NA  NA   2  2  0   NA 0.4512195
+8872 mcgrajo01 1902     2  NY1 NL  35 107  13  25   0   0  0   5  7 NA  26 NA  NA   4  2  0   NA 0.4014599
+
+R > install.packages("RXKCD")
+also installing the dependencies ‘RJSONIO’, ‘png’, ‘jpeg’
+
+URL 'http://cran.nexr.com/bin/macosx/mavericks/contrib/3.1/RJSONIO_1.3-0.tgz'을 시도합니다
+Content type 'application/x-gzip' length 1272440 bytes (1.2 Mb)
+URL을 열었습니다
+==================================================
+downloaded 1.2 Mb
+
+URL 'http://cran.nexr.com/bin/macosx/mavericks/contrib/3.1/png_0.1-7.tgz'을 시도합니다
+Content type 'application/x-gzip' length 256466 bytes (250 Kb)
+URL을 열었습니다
+==================================================
+downloaded 250 Kb
+
+URL 'http://cran.nexr.com/bin/macosx/mavericks/contrib/3.1/jpeg_0.1-8.tgz'을 시도합니다
+Content type 'application/x-gzip' length 336986 bytes (329 Kb)
+URL을 열었습니다
+==================================================
+downloaded 329 Kb
+
+URL 'http://cran.nexr.com/bin/macosx/mavericks/contrib/3.1/RXKCD_1.7-5.tgz'을 시도합니다
+Content type 'application/x-gzip' length 339817 bytes (331 Kb)
+URL을 열었습니다
+==================================================
+downloaded 331 Kb
+
+
+다운로드된 바이너리 패키지들은 다음의 위치에 있습니다
+	/var/folders/_h/tg1th9bd4h98rjjb5vy9gn3m0000gn/T//RtmpyN9XPt/downloaded_packages
+R > require(RXKCD)
+필요한 패키지를 로딩중입니다: RXKCD
+필요한 패키지를 로딩중입니다: RJSONIO
+필요한 패키지를 로딩중입니다: png
+필요한 패키지를 로딩중입니다: jpeg
+R > getXKCD(which="552")
+image.url = http://imgs.xkcd.com/comics/correlation.png
+title =  Correlation
+num = 552
+year = 2009
+transcript = [[A man is talking to a woman]]
+Man: I used to think correlation implied causation.
+Man: Then I took a statistics class.  Now I don't.
+Woman: Sounds like the class helped.
+Man: Well, maybe.
+{{Title text: Correlation doesn't imply causation, but it does waggle its eyebrows suggestively and gesture furtively while mouthing 'look over there'.}}
+alt = Correlation doesn't imply causation, but it does waggle its eyebrows suggestively and gesture furtively while mouthing 'look over there'.
+R > diff
+function (x, ...) 
+UseMethod("diff")
+<bytecode: 0x7fb441bebb48>
+<environment: namespace:base>
+R > ?by
+R > install.packages("HSAUR2")
+URL 'http://cran.nexr.com/bin/macosx/mavericks/contrib/3.1/HSAUR2_1.1-11.tgz'을 시도합니다
+Content type 'application/x-gzip' length 2997364 bytes (2.9 Mb)
+URL을 열었습니다
+==================================================
+downloaded 2.9 Mb
+
+
+다운로드된 바이너리 패키지들은 다음의 위치에 있습니다
+	/var/folders/_h/tg1th9bd4h98rjjb5vy9gn3m0000gn/T//RtmpyN9XPt/downloaded_packages
+R > library(HSAUR2)
+필요한 패키지를 로딩중입니다: tools
+R > roomwidth
+      unit width
+1   metres     8
+2   metres     9
+3   metres    10
+4   metres    10
+5   metres    10
+6   metres    10
+7   metres    10
+8   metres    10
+9   metres    11
+10  metres    11
+11  metres    11
+12  metres    11
+13  metres    12
+14  metres    12
+15  metres    13
+16  metres    13
+17  metres    13
+18  metres    14
+19  metres    14
+20  metres    14
+21  metres    15
+22  metres    15
+23  metres    15
+24  metres    15
+25  metres    15
+26  metres    15
+27  metres    15
+28  metres    15
+29  metres    16
+30  metres    16
+31  metres    16
+32  metres    17
+33  metres    17
+34  metres    17
+35  metres    17
+36  metres    18
+37  metres    18
+38  metres    20
+39  metres    22
+40  metres    25
+41  metres    27
+42  metres    35
+43  metres    38
+44  metres    40
+45    feet    24
+46    feet    25
+47    feet    27
+48    feet    30
+49    feet    30
+50    feet    30
+51    feet    30
+52    feet    30
+53    feet    30
+54    feet    32
+55    feet    32
+56    feet    33
+57    feet    34
+58    feet    34
+59    feet    34
+60    feet    35
+61    feet    35
+62    feet    36
+63    feet    36
+64    feet    36
+65    feet    37
+66    feet    37
+67    feet    40
+68    feet    40
+69    feet    40
+70    feet    40
+71    feet    40
+72    feet    40
+73    feet    40
+74    feet    40
+75    feet    40
+76    feet    41
+77    feet    41
+78    feet    42
+79    feet    42
+80    feet    42
+81    feet    42
+82    feet    43
+83    feet    43
+84    feet    44
+85    feet    44
+86    feet    44
+87    feet    45
+88    feet    45
+89    feet    45
+90    feet    45
+91    feet    45
+92    feet    45
+93    feet    46
+94    feet    46
+95    feet    47
+96    feet    48
+97    feet    48
+98    feet    50
+99    feet    50
+100   feet    50
+101   feet    51
+102   feet    54
+103   feet    54
+104   feet    54
+105   feet    55
+106   feet    55
+107   feet    60
+108   feet    60
+109   feet    63
+110   feet    70
+111   feet    75
+112   feet    80
+113   feet    94
+R > tapply(width,unit,mean)
+다음에 오류가 있습니다tapply(width, unit, mean) : 객체 'unit'를 찾을 수 없습니다
+R > with(roomwidth,tapply(width,unit,mean))
+    feet   metres 
+43.69565 16.02273 
+R > ls()

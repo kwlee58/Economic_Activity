@@ -1,0 +1,29 @@
+-----
+title: "Pictogram"
+author: "coop711"
+date: "2015. 4. 16"
+output: html_document
+-----
+
+Case of Korea Income Data
+-------------------------
+
+Mean Income and Median Income from SERI report.
+
+```{r}
+load("income_03_09.rda")
+ls()
+cbind(mean=mean.income, )
+```
+
+Plots
+
+```{r fig.width=8, fig.height=4}
+options(digits=3)
+median.mean.ratio<-median.income/mean.income*100
+par(mfrow=c(1,2))
+plot(2003:2009, median.mean.ratio, type="b", xlab="Year", ylab="Median by Mean Income Ratio (%)")
+plot(2003:2009, median.mean.ratio, type="b", xlab="Year", ylab="Median by Mean Income Ratio (%)", ylim=c(60,100))
+par(mfrow=c(1,1))
+```
+

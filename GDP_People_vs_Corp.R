@@ -1,0 +1,7 @@
+plot(c(1991, 2005), growth.rate[1,], type="b", pch=17, ylim=c(0,30), xlim=c(1985, 2011), ann=F, xaxt="n", yaxt="n")
+axis(side=2, at=seq(0,30,by=5), labels=seq(0,30, by=5))
+lines(c(1991, 2005), growth.rate[2,], type="b", pch=17, col="blue")
+lines(c(1991, 2005), growth.rate[3,], type="b", pch=17, col="red")
+legend("topleft", inset=0.05, lty=1, col=c("black", "blue", "red"), legend=c("GDP", "개인", "법인"))
+text(x=c(1991,2005), y=c(17, 20), labels=c("1985~1997", "1999~2011"))
+title(main="개인과 법인의 GDP 성장률", ylab="성장률(%)")
