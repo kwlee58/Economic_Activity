@@ -12,7 +12,7 @@ Data Management
 읽어들일 때 같은 이름이 있으면 `duplicate row.names not allowed  Error` 가 나게 됨.
 
 ```{r}
-NDI<-read.table("../data/NDI_kor.txt", header=T, row.names=1)
+NDI<-read.table("NDI_kor.txt", header=T, row.names=1)
 NDI
 ```
 
@@ -168,7 +168,6 @@ title(main="Trend of NDI Composition", xlab="Year", ylab="Relative Portion (%)")
 - 한글로 텍스트를 붙이려면
 
 ```{r fig.width=6, fig.heigh=6}
-par(family = "AppleGothic")
 plot(x=c(1990, 1995, 2000, 2005, 2011), y=gov, type="l", ylim=c(0,100), xaxt="n", yaxt="n", ann=F)
 lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3, type="l")
 lines(x=c(1990, 1995, 2000, 2005, 2011), y=gov+personal.3-personal.1, type="l")
